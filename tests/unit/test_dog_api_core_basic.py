@@ -1,5 +1,4 @@
 import json
-
 from dog_api.core import DogAPI
 
 
