@@ -94,11 +94,11 @@ class DogAPI:
         return response
 
 
-if __name__ == "__main__":
-    dog = DogAPI()
+# if __name__ == "__main__":
+#     dog = DogAPI()
 #     list_breeds_resp = dog.list_breeds(query_dict={"attach_breed": 1, "page": 1, "limit": 1})
 #     search_breeds_resp = dog.search_breeds(query_str="shiba")
-    create_vote_resp = dog.create_vote(payload={"image_id": "asf2", "value": 1})
+#     create_vote_resp = dog.create_vote(payload={"image_id": "asf2", "value": 1})
 #     print(list_breeds_resp)
 #     print(search_breeds_resp)
-    print(create_vote_resp)
+#     print(create_vote_resp)
