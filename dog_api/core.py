@@ -1,3 +1,5 @@
+import json
+
 import logging
 from enum import Enum
 from requests.auth import HTTPBasicAuth
@@ -45,9 +47,11 @@ class DogAPI:
             elif request_type == "POST":
                 response = requests.post(endpoint, headers=self.headers, auth=self.auth, timeout=30,
                                          json=payload)
-            response.raise_for_status()
+            # response.raise_for_status()
             if response.status_code in (200, 201):
                 return response.json()
+            elif response.status_code == 401:
+                return json.dumps({"ERROR": "Authorization Error. Please check API Key" })
         except requests.exceptions.HTTPError as errh:
             print(errh)
         except requests.exceptions.ConnectionError as errc:
@@ -90,11 +94,11 @@ class DogAPI:
         return response
 
 
-# if __name__ == "__main__":
-#     dog = DogAPI()
+if __name__ == "__main__":
+    dog = DogAPI()
 #     list_breeds_resp = dog.list_breeds(query_dict={"attach_breed": 1, "page": 1, "limit": 1})
 #     search_breeds_resp = dog.search_breeds(query_str="shiba")
-#     create_vote_resp = dog.create_vote(payload={"image_id": "asf2", "value": 1})
+    create_vote_resp = dog.create_vote(payload={"image_id": "asf2", "value": 1})
 #     print(list_breeds_resp)
 #     print(search_breeds_resp)
-#     print(create_vote_resp)
+    print(create_vote_resp)

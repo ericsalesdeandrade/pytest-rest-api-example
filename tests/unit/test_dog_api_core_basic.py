@@ -1,3 +1,7 @@
+import json
+
+from dog_api.core import DogAPI
+
 
 def test_list_breeds(dog_api) -> None:
     """
@@ -24,7 +28,7 @@ def test_search_breeds(dog_api) -> None:
     :return: None
     """
     expected_response = [{'weight': {'imperial': '17 - 23', 'metric': '8 - 10'}, 'height':
-                         {'imperial': '13.5 - 16.5', 'metric': '34 - 42'},
+        {'imperial': '13.5 - 16.5', 'metric': '34 - 42'},
                           'id': 222, 'name': 'Shiba Inu',
                           'bred_for': 'Hunting in the mountains of Japan, Alert Watchdog',
                           'breed_group': 'Non-Sporting', 'life_span': '12 - 16 years',
@@ -43,3 +47,15 @@ def test_create_vote(dog_api) -> None:
     expected_response = {'message': 'SUCCESS', 'id': 129143, 'image_id': 'asf2', 'value': 1, 'country_code': 'AR'}
     actual_response = dog_api.create_vote(payload={"image_id": "asf2", "value": 1})
     assert actual_response["message"] == expected_response["message"]
+
+
+def test_auth_api_key_error() -> None:
+    """
+    Unit Test to Test Auth on Post Request
+    :return: None
+    """
+    dog_api_temp = DogAPI()
+    dog_api_temp.headers = {"Content-Type": "application/json", "x-api-key": "FAKE_KEY"}
+    expected_response = {"ERROR": "Authorization Error. Please check API Key"}
+    actual_response = dog_api_temp.create_vote(payload={"image_id": "asf2", "value": 1})
+    assert json.loads(actual_response) == expected_response
