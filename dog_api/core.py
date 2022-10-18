@@ -48,15 +48,15 @@ class DogAPI:
             if response.status_code in (200, 201):
                 return response.json()
             elif response.status_code == 401:
-                return json.dumps({"ERROR": "Authorization Error. Please check API Key" })
+                return json.dumps({"ERROR": "Authorization Error. Please check API Key"})
         except requests.exceptions.HTTPError as errh:
-            print(errh)
+            logging.error(errh)
         except requests.exceptions.ConnectionError as errc:
-            print(errc)
+            logging.error(errc)
         except requests.exceptions.Timeout as errt:
-            print(errt)
+            logging.error(errt)
         except requests.exceptions.RequestException as err:
-            print(err)
+            logging.error(err)
 
     def list_breeds(self, query_dict: dict) -> str:
         """
@@ -65,7 +65,10 @@ class DogAPI:
         :return: Response. Type - JSON Formatted String
         """
         breeds_url = f"{self.base_url}/breeds"
-        response = self.call_api(request_type=RequestType.GET.value, endpoint=breeds_url, payload=query_dict)
+        if isinstance(query_dict, dict):
+            response = self.call_api(request_type=RequestType.GET.value, endpoint=breeds_url, payload=query_dict)
+        else:
+            raise ValueError("ERROR - Parameter 'query_dict' should be of Type Dict")
         return response
 
     def search_breeds(self, query_str: str):
@@ -75,8 +78,11 @@ class DogAPI:
         :return: Response. Type - JSON Formatted String
         """
         search_breeds_url = f"{self.base_url}/breeds/search"
-        response = self.call_api(request_type=RequestType.GET.value, endpoint=search_breeds_url,
-                                 payload={"q": query_str})
+        if isinstance(query_str, str):
+            response = self.call_api(request_type=RequestType.GET.value, endpoint=search_breeds_url,
+                                     payload={"q": query_str})
+        else:
+            raise ValueError("ERROR - Parameter 'query_str' should be of Type Str")
         return response
 
     def create_vote(self, payload: dict) -> str:
@@ -86,16 +92,19 @@ class DogAPI:
         :return: Response. Type - JSON Formatted String
         """
         create_vote_url = f"{self.base_url}/votes"
-        response = self.call_api(request_type=RequestType.POST.value, endpoint=create_vote_url,
-                                 payload=payload)
+        if isinstance(payload, dict) and "image_id" and "value" in payload:
+            response = self.call_api(request_type=RequestType.POST.value, endpoint=create_vote_url,
+                                     payload=payload)
+        else:
+            raise ValueError("ERROR - Parameter 'payload' should be of Type Dict")
         return response
 
 
-if __name__ == "__main__":
-    dog = DogAPI()
-    list_breeds_resp = dog.list_breeds(query_dict={"attach_breed": 1, "page": 1, "limit": 1})
-    search_breeds_resp = dog.search_breeds(query_str="shiba")
-    create_vote_resp = dog.create_vote(payload={"image_id": "asf2", "value": 1})
-    print(list_breeds_resp)
-    print(search_breeds_resp)
-    print(create_vote_resp)
+# if __name__ == "__main__":
+#     dog = DogAPI()
+#     list_breeds_resp = dog.list_breeds(query_dict={"attach_breed": 1, "page": 1, "limit": 1})
+#     search_breeds_resp = dog.search_breeds(query_str="shiba")
+#     create_vote_resp = dog.create_vote(payload={"image_id": "asf2", "value": 1})
+#     print(list_breeds_resp)
+#     print(search_breeds_resp)
+#     print(create_vote_resp)
