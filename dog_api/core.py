@@ -44,11 +44,12 @@ class DogAPI:
             elif request_type == "POST":
                 response = requests.post(endpoint, headers=self.headers, timeout=30,
                                          json=payload)
-            # response.raise_for_status()
+
             if response.status_code in (200, 201):
                 return response.json()
             elif response.status_code == 401:
                 return json.dumps({"ERROR": "Authorization Error. Please check API Key"})
+            response.raise_for_status()
         except requests.exceptions.HTTPError as errh:
             logging.error(errh)
         except requests.exceptions.ConnectionError as errc:
