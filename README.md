@@ -20,4 +20,4 @@ To run the Unit Tests, from the root of the repo run
 pytest ./tests/unit/
 ```
 
-Any questions about the work please raise an Issue on GitHub. 
+If you have any questions about the project please raise an Issue on GitHub. 
