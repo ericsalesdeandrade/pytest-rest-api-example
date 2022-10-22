@@ -1,5 +1,6 @@
 # PyTest REST API Example
 
+This project explains how to call an External Rest API ([DogAPI](https://thedogapi.com/)) and validate call `GET` and `POST` API methods using PytTest including the use of fixtures and mocking.
 # Requirements
 * Python (3.10.6)
 
