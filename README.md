@@ -1,5 +1,7 @@
 # PyTest REST API Example
 
+This repo contains the sample code for the article - [Python REST API Unit Testing for External APIs](https://pytest-with-eric/pytest-best-practices/python-rest-api-unit-testing/)
+
 This project explains how to call an External Rest API ([DogAPI](https://thedogapi.com/)) and validate call `GET` and `POST` API methods using PytTest including the use of fixtures and mocking.
 # Requirements
 * Python (3.10.6)
